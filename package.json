@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "8.2.4",
-    "inquirer-tree-prompt": "1.1.2"
+    "inquirer": "8.2.4"
   }
 }
