@@ -1,6 +1,10 @@
 const inquirer = require("inquirer");
 
 class Questions {
+    static message = {
+        welcome: `Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nYou'll be asked a series of questions to customise the contents, and then given the option to edit the generated README.`
+    }
+
     static sections = {
         name: "sections",
         message: `Specify what optional sections should be included in your README`,
@@ -14,19 +18,19 @@ class Questions {
             new inquirer.Separator("========"),
             {
                 name: "Motivation (Why you built the app)",
-                value: "description.motivation"
+                value: "motivation"
             },
             {
                 name: "Focus (What the app is designed to solve)",
-                value: "description.focus"
+                value: "focus"
             },
             {
                 name: "Method (How the app accomplishes its goal)",
-                value: "description.method"
+                value: "method"
             },
             {
                 name: "Features (Main capabilities of the app)",
-                value: "description.features"
+                value: "features"
             },
             new inquirer.Separator(" "),
             {
@@ -36,15 +40,15 @@ class Questions {
             new inquirer.Separator("========"),
             {
                 name: "Prerequisites (Apps or runtimes required to run)",
-                value: "installation.prerequisites"
+                value: "prerequisites"
             },
             {
                 name: "Quick Start (Summary steps for a bare-minimum start)",
-                value: "installation.quickstart"
+                value: "quickstart"
             },
             {
                 name: "Configuration (Settings that should be reviewed first)",
-                value: "installation.configuration"
+                value: "configuration"
             },
             new inquirer.Separator(" "),
             {
@@ -54,7 +58,7 @@ class Questions {
             new inquirer.Separator("========"),
             {
                 name: "Media (Screenshots or animations demonstrating the app)",
-                value: "usage.media"
+                value: "media"
             },
             new inquirer.Separator(" "),
             {
@@ -64,37 +68,20 @@ class Questions {
             new inquirer.Separator("========"),
             {
                 name: "Tests (What are included, and how to use them)",
-                value: "contribute.tests"
+                value: "tests"
             },
             {
                 name: "Guidelines (Code of Conduct, Instructions, etc)",
-                value: "contribute.guidelines"
+                value: "guidelines"
             },
             {
                 name: "Priority Items (What needs immediate attention)",
-                value: "contribute.priority"
+                value: "priority"
             },
             new inquirer.Separator(" "),
             {
                 name: "Socials",
-                disabled: "Links and contact information"
-            },
-            new inquirer.Separator("========"),
-            {
-                name: "Email",
-                value: "socials.email"
-            },
-            {
-                name: "Github",
-                value: "socials.github"
-            },
-            {
-                name: "LinkedIn",
-                value: "socials.linkedin"
-            },
-            {
-                name: "Twitter",
-                value: "socials.twitter"
+                value: "socials"
             }
         ]
     };
@@ -151,9 +138,48 @@ class Questions {
         }
     ];
 
-    static ask() {
-        inquirer.prompt(Questions.sections)
-            .then(answers => console.log(answers));
+    static socials = [
+        {
+            name: "email",
+            message: `Email:`,
+            type: 'input',
+            validate: (test) => /^.+?@.+?\.\w$/.test(test)
+        },
+        {
+            name: "github",
+            message: `Github:`,
+            type: 'input'
+        },
+        {
+            name: "linkedin",
+            message: `LinkedIn:`,
+            type: 'input'
+        },
+        {
+            name: "facebook",
+            message: `Facebook:`,
+            type: 'input'
+        },
+        {
+            name: "twitter",
+            message: `Twitter:`,
+            type: 'input'
+        }
+    ]
+
+    static async ask() {
+        console.log(Questions.message.welcome);
+        const requiredAnswers = await inquirer.prompt(Questions.required);
+        const sectionAnswers = await inquirer.prompt(Questions.sections);
+        let socialAnswers;
+        if (sectionAnswers.sections.includes("socials")) {
+            socialAnswers = await inquirer.prompt(Questions.socials);
+        }
+        console.log(requiredAnswers);
+        console.log(sectionAnswers);
+        if (socialAnswers) {
+            console.log(socialAnswers);
+        }
     }
 }
 
