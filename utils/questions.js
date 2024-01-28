@@ -9,91 +9,91 @@ class Questions {
         choices: [
             {
                 name: "Description",
-                disabled: true
+                disabled: "General information about your app"
             },
             new inquirer.Separator("========"),
             {
-                name: "\tMotivation | What was the impetus for building this app?",
+                name: "Motivation (Why you built the app)",
                 value: "description.motivation"
             },
             {
-                name: "\tFocus | What does the app aim to solve?",
+                name: "Focus (What the app is designed to solve)",
                 value: "description.focus"
             },
             {
-                name: "\tMethod | How does the app accomplish its goal?",
+                name: "Method (How the app accomplishes its goal)",
                 value: "description.method"
             },
             {
-                name: "\tFeatures | What are the main capabilities of the app?",
+                name: "Features (Main capabilities of the app)",
                 value: "description.features"
             },
             new inquirer.Separator(" "),
             {
                 name: "Installation",
-                disabled: true
+                disabled: "For apps that require setup before use"
             },
             new inquirer.Separator("========"),
             {
-                name: "\tPrerequisites | Outline what must be installed first",
+                name: "Prerequisites (Apps or runtimes required to run)",
                 value: "installation.prerequisites"
             },
             {
-                name: "\tQuick Start | Provide a quick setup guide using defaults",
+                name: "Quick Start (Summary steps for a bare-minimum start)",
                 value: "installation.quickstart"
             },
             {
-                name: "\tConfiguration | Advise of important settings to change prior to use",
+                name: "Configuration (Settings that should be reviewed first)",
                 value: "installation.configuration"
             },
             new inquirer.Separator(" "),
             {
                 name: "Usage",
-                disabled: true
+                disabled: "Instructions on how to use core features of your app"
             },
             new inquirer.Separator("========"),
             {
-                name: "\tDemo Media | Include one or more screenshots or clips of the app being used",
-                value: "usage.demomedia"
+                name: "Media (Screenshots or animations demonstrating the app)",
+                value: "usage.media"
             },
             new inquirer.Separator(" "),
             {
                 name: "Contribute",
-                disabled: true
+                disabled: "Information about how others can help out"
             },
             new inquirer.Separator("========"),
             {
-                name: "Tests | If you use a testing suite, advise developers what is available",
+                name: "Tests (What are included, and how to use them)",
                 value: "contribute.tests"
             },
             {
-                name: "Guidelines | Provide guidance on how they can help",
+                name: "Guidelines (Code of Conduct, Instructions, etc)",
                 value: "contribute.guidelines"
             },
             {
-                name: "Priority Focus | Inform devs which areas require the most attention",
+                name: "Priority Items (What needs immediate attention)",
                 value: "contribute.priority"
             },
-            new inquirier.Separator(" "),
+            new inquirer.Separator(" "),
             {
                 name: "Socials",
-                disabled: true
+                disabled: "Links and contact information"
             },
             new inquirer.Separator("========"),
             {
-                name: "Email | Provide a contact email",
+                name: "Email",
                 value: "socials.email"
             },
             {
-                name: "Github | Share your Github account",
+                name: "Github",
                 value: "socials.github"
             },
             {
-                name: "LinkedIn | Share your LinkedIn profile",
+                name: "LinkedIn",
                 value: "socials.linkedin"
             },
             {
-                name: "Twitter | Share your Twitter account",
+                name: "Twitter",
                 value: "socials.twitter"
             }
         ]
