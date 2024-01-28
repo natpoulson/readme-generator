@@ -84,17 +84,85 @@ class Questions {
                         value: "contribution.priority"
                     }
                 ]
+            },
+            {
+                name: "Socials",
+                value: "socials",
+                open: false,
+                multiple: true,
+                children: [
+                    {
+                        name: "Email | Provide a contact email",
+                        value: "socials.email"
+                    },
+                    {
+                        name: "Github | Share your Github account",
+                        value: "socials.github"
+                    },
+                    {
+                        name: "LinkedIn | Share your LinkedIn profile",
+                        value: "socials.linkedin"
+                    },
+                    {
+                        name: "Twitter | Share your Twitter account",
+                        value: "socials.twitter"
+                    }
+                ]
             }
         ]
     };
 
-    static required = {
-        
-    }
-
-    static optional = {
-
-    }
+    static required = [
+        {
+            name: "description.title",
+            message: `What is the name of your app?\n\t`,
+            type: 'input'
+        },
+        {
+            name: "description.summary",
+            message: `What does your app do?\n\t`,
+            type: 'input'
+        },
+        {
+            name: "license",
+            message: `What license will you be attributing to this project?`,
+            type: 'list',
+            choices: [
+                {
+                    name: 'GNU AGPL v3',
+                    value: 'agpl3'
+                },
+                {
+                    name: 'GNU GPL v3',
+                    value: 'gpl3'
+                },
+                {
+                    name: 'GNU LGPL v3',
+                    value: 'lgpl3'
+                },
+                {
+                    name: 'Mozilla Public License 2.0',
+                    value: 'mpl2'
+                },
+                {
+                    name: 'Apache License 2.0',
+                    value: 'al2'
+                },
+                {
+                    name: 'MIT License',
+                    value: 'mit'
+                },
+                {
+                    name: 'Boost Software License 1.0',
+                    value: 'boost1'
+                },
+                {
+                    name: 'The Unlicense',
+                    value: 'unlicense'
+                }
+            ]
+        }
+    ];
 }
 
 module.exports = Questions;
