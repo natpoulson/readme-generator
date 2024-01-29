@@ -20,13 +20,13 @@ class Questions {
 
     static required = [
         {
-            name: "description.title",
-            message: `What is the name of your app?\n\t`,
+            name: "title",
+            message: `What is the name of your app?\n`,
             type: 'input'
         },
         {
-            name: "description.summary",
-            message: `What does your app do?\n\t`,
+            name: "summary",
+            message: `What does your app do?\n`,
             type: 'input'
         },
         {
@@ -131,7 +131,7 @@ class Questions {
             name: "email",
             message: `Email:`,
             type: 'input',
-            validate: (test) => /^.+?@.+?\.\w$/.test(test)
+            validate: (test) => /^.+@.+\.\w+$/.test(test)
         },
         {
             name: "github",
