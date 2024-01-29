@@ -7,7 +7,11 @@ function writeToFile(fileName, data) {}
 
 // TODO: Create a function to initialize app
 function init() {
-    Questions.ask();
+    Questions.ask()
+        .then(responses => {
+            const [required, sections, socials] = responses;
+            // Generate the sections
+        });
 }
 
 // Function call to initialize app
