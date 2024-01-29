@@ -1,23 +1,74 @@
 const inquirer = require("inquirer");
 
-class Questions {
-    static messages = {
-        welcome: `Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nThen, you'll be asked a series of questions to customise the contents, and then finally given the option to edit the generated README.`
+class Answers {
+    static license = {
+        AGPL3: 'GNU AGPL v3',
+        GPL3: 'GNU GPL v3',
+        LGPL3: 'GNU LGPL v3',
+        MOZILLA2: 'Mozilla Public License 2.0',
+        APACHE2: 'Apache License 2.0',
+        MIT: 'MIT License',
+        BOOST: 'Boost Software License 1.0',
+        UNLICENSE: 'The Unlicense'
     };
 
-    static enum = {
-        license: {
-            AGPL3: 'GNU AGPL v3',
-            GPL3: 'GNU GPL v3',
-            LGPL3: 'GNU LGPL v3',
-            MOZILLA2: 'Mozilla Public License 2.0',
-            APACHE2: 'Apache License 2.0',
-            MIT: 'MIT License',
-            BOOST: 'Boost Software License 1.0',
-            UNLICENSE: 'The Unlicense'
-        }
+    static mode = {
+        APPENDED: 0, // Concatenate responses as sentences
+        ITEMS: 1, // Present as an unordered list
+        STEPS: 2, // Present as an ordered list
+        MEDIA: 3, // Each piece of media occupies its own line
+        CODE: 4 // Presented as Description/Code pairs
     }
 
+    static responses = {
+        motivation: {
+            mode: Answers.mode.APPENDED,
+            items: []
+        },
+        focus: {
+            mode: Answers.mode.APPENDED,
+            items: []
+        },
+        method: {
+            mode: Answers.mode.ITEMS,
+            items: []
+        },
+        features: {
+            mode: Answers.mode.ITEMS,
+            items: []
+        },
+        prerequisites: {
+            mode: Answers.mode.ITEMS,
+            items: []
+        },
+        quickstart: {
+            mode: Answers.mode.STEPS,
+            items: []
+        },
+        configuration: {
+            mode: Answers.mode.CODE,
+            items: []
+        },
+        media: {
+            mode: Answers.mode.MEDIA,
+            items: []
+        },
+        tests: {
+            mode: Answers.mode.CODE,
+            items: []
+        },
+        guidelines: {
+            mode: Answers.mode.ITEMS,
+            items: []
+        },
+        priority: {
+            mode: Answers.mode.ITEMS,
+            items: []
+        }
+    }
+}
+
+class Questions {
     static required = [
         {
             name: "title",
@@ -32,15 +83,15 @@ class Questions {
         {
             name: "license",
             message: `What license will you be attributing to this project?`,
-            type: 'list',
+            type: 'ITEMS',
             choices: [
-                Questions.enum.license.AGPL3,
-                Questions.enum.license.GPL3,
-                Questions.enum.license.LGPL3,
-                Questions.enum.license.MOZILLA2,
-                Questions.enum.license.MIT,
-                Questions.enum.license.BOOST,
-                Questions.enum.license.UNLICENSE
+                Answers.license.AGPL3,
+                Answers.license.GPL3,
+                Answers.license.LGPL3,
+                Answers.license.MOZILLA2,
+                Answers.license.MIT,
+                Answers.license.BOOST,
+                Answers.license.UNLICENSE
             ]
         }
     ];
@@ -155,8 +206,22 @@ class Questions {
         }
     ]
 
+    static async askLoop(question, loopPrompt = "Do you want to add more?") {
+        let answers = [];
+
+        do {
+            answers.push(await inquirer.prompt(question));
+        } while (inquirer.prompt({
+            type: 'confirm',
+            name: 'loop',
+            message: loopPrompt
+        }) === true);
+
+        return answers;
+    }
+
     static async ask() {
-        console.log(Questions.messages.welcome);
+        console.log(`Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nThen, you'll be asked a series of questions to customise the contents, and then finally given the option to edit the generated README.`);
 
         const requiredAnswers = await inquirer.prompt(Questions.required);
         const sectionAnswers = await inquirer.prompt(Questions.sections);
@@ -170,4 +235,7 @@ class Questions {
     }
 }
 
-module.exports = Questions;
+module.exports = {
+    Questions,
+    Answers
+};
