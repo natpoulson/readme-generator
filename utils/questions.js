@@ -1,9 +1,22 @@
 const inquirer = require("inquirer");
 
 class Questions {
-    static message = {
-        welcome: `Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nYou'll be asked a series of questions to customise the contents, and then given the option to edit the generated README.`
+    static messages = {
+        welcome: `Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nThen, you'll be asked a series of questions to customise the contents, and then finally given the option to edit the generated README.`
     };
+
+    static enum = {
+        license: {
+            AGPL3: 'GNU AGPL v3',
+            GPL3: 'GNU GPL v3',
+            LGPL3: 'GNU LGPL v3',
+            MOZILLA2: 'Mozilla Public License 2.0',
+            APACHE2: 'Apache License 2.0',
+            MIT: 'MIT License',
+            BOOST: 'Boost Software License 1.0',
+            UNLICENSE: 'The Unlicense'
+        }
+    }
 
     static required = [
         {
@@ -21,38 +34,13 @@ class Questions {
             message: `What license will you be attributing to this project?`,
             type: 'list',
             choices: [
-                {
-                    name: 'GNU AGPL v3',
-                    value: 'agpl3'
-                },
-                {
-                    name: 'GNU GPL v3',
-                    value: 'gpl3'
-                },
-                {
-                    name: 'GNU LGPL v3',
-                    value: 'lgpl3'
-                },
-                {
-                    name: 'Mozilla Public License 2.0',
-                    value: 'mpl2'
-                },
-                {
-                    name: 'Apache License 2.0',
-                    value: 'al2'
-                },
-                {
-                    name: 'MIT License',
-                    value: 'mit'
-                },
-                {
-                    name: 'Boost Software License 1.0',
-                    value: 'boost1'
-                },
-                {
-                    name: 'The Unlicense',
-                    value: 'unlicense'
-                }
+                Questions.enum.license.AGPL3,
+                Questions.enum.license.GPL3,
+                Questions.enum.license.LGPL3,
+                Questions.enum.license.MOZILLA2,
+                Questions.enum.license.MIT,
+                Questions.enum.license.BOOST,
+                Questions.enum.license.UNLICENSE
             ]
         }
     ];
@@ -168,16 +156,17 @@ class Questions {
     ]
 
     static async ask() {
-        console.log(Questions.message.welcome);
+        console.log(Questions.messages.welcome);
 
         const requiredAnswers = await inquirer.prompt(Questions.required);
         const sectionAnswers = await inquirer.prompt(Questions.sections);
 
-        let socialAnswers;
+        let socialAnswers = [];
         if (sectionAnswers.sections.includes("socials")) {
             socialAnswers = await inquirer.prompt(Questions.socials);
         }
-        
+
+        return [requiredAnswers, sectionAnswers, socialAnswers];
     }
 }
 
