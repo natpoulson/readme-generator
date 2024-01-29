@@ -4,7 +4,7 @@ const Questions = require("./questions.js");
 // If there is no license, return an empty string
 function renderLicenseBadge(license) {
   if (Object.values(Questions.enum.license).includes(license)) {
-    const url = `https://img.shields.io/badge/License-${license.replace(/\s/, '_')}-limegreen`;
+    const url = `https://img.shields.io/badge/License-${license.replace(/\s/g, '_')}-limegreen`;
     return `![License: ${license}](${url})`;
   }
 
@@ -37,9 +37,4 @@ function generateMarkdown(data) {
 `;
 }
 
-module.exports = {
-    generateMarkdown,
-    renderLicenseSection,
-    renderLicenseLink,
-    renderLicenseBadge
-};
+module.exports = generateMarkdown;
