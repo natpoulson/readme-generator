@@ -11,61 +11,6 @@ class Answers {
         BOOST: 'Boost Software License 1.0',
         UNLICENSE: 'The Unlicense'
     };
-
-    static mode = {
-        APPENDED: 0, // Concatenate responses as sentences
-        ITEMS: 1, // Present as an unordered list
-        STEPS: 2, // Present as an ordered list
-        MEDIA: 3, // Each piece of media occupies its own line
-        CODE: 4 // Presented as Description/Code pairs
-    }
-
-    static responses = {
-        motivation: {
-            mode: Answers.mode.APPENDED,
-            items: []
-        },
-        focus: {
-            mode: Answers.mode.APPENDED,
-            items: []
-        },
-        method: {
-            mode: Answers.mode.ITEMS,
-            items: []
-        },
-        features: {
-            mode: Answers.mode.ITEMS,
-            items: []
-        },
-        prerequisites: {
-            mode: Answers.mode.ITEMS,
-            items: []
-        },
-        quickstart: {
-            mode: Answers.mode.STEPS,
-            items: []
-        },
-        configuration: {
-            mode: Answers.mode.CODE,
-            items: []
-        },
-        media: {
-            mode: Answers.mode.MEDIA,
-            items: []
-        },
-        tests: {
-            mode: Answers.mode.CODE,
-            items: []
-        },
-        guidelines: {
-            mode: Answers.mode.ITEMS,
-            items: []
-        },
-        priority: {
-            mode: Answers.mode.ITEMS,
-            items: []
-        }
-    }
 }
 
 class Questions {
@@ -206,32 +151,45 @@ class Questions {
         }
     ]
 
-    static async askLoop(question, loopPrompt = "Do you want to add more?") {
+    static loop = {
+        name: 'loop',
+        message: 'Would you like to add more?',
+        type: 'confirm'
+    }
+
+    static async askLoop(...questions) {
         let answers = [];
+        let answerSet = [];
 
         do {
-            answers.push(await inquirer.prompt(question));
-        } while (inquirer.prompt({
-            type: 'confirm',
-            name: 'loop',
-            message: loopPrompt
-        }) === true);
+            answerSet = {};
+
+            for (const question of questions) {
+                answerSet[question.name] = (await inquirer.prompt(question))[question.name];
+            }
+
+            answers.push(answerSet);
+        } while (await inquirer.prompt(Questions.loop)
+            .then(answer => answer.loop));
 
         return answers;
     }
 
     static async ask() {
-        console.log(`Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nThen, you'll be asked a series of questions to customise the contents, and then finally given the option to edit the generated README.`);
+        // console.log(`Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nSome sections will ask you questions multiple times if you have a lot to add.`);
 
-        const requiredAnswers = await inquirer.prompt(Questions.required);
-        const sectionAnswers = await inquirer.prompt(Questions.sections);
+        // const requiredAnswers = await inquirer.prompt(Questions.required);
 
-        let socialAnswers = [];
-        if (sectionAnswers.sections.includes("socials")) {
-            socialAnswers = await inquirer.prompt(Questions.socials);
-        }
+        const testAnswers = await Questions.askLoop({name: 'testQuestion', message: 'Tell me something', type:'input'});
+        console.log(testAnswers);
+        // const sectionAnswers = await inquirer.prompt(Questions.sections);
 
-        return [requiredAnswers, sectionAnswers, socialAnswers];
+        // let socialAnswers = [];
+        // if (sectionAnswers.sections.includes("socials")) {
+        //     socialAnswers = await inquirer.prompt(Questions.socials);
+        // }
+
+        // return [requiredAnswers, sectionAnswers, socialAnswers];
     }
 }
 
