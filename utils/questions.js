@@ -1,23 +1,19 @@
 const inquirer = require("inquirer");
 
-class Questions {
-    static messages = {
-        welcome: `Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nThen, you'll be asked a series of questions to customise the contents, and then finally given the option to edit the generated README.`
+class Answers {
+    static license = {
+        AGPL3: 'GNU AGPL v3',
+        GPL3: 'GNU GPL v3',
+        LGPL3: 'GNU LGPL v3',
+        MOZILLA2: 'Mozilla Public License 2.0',
+        APACHE2: 'Apache License 2.0',
+        MIT: 'MIT License',
+        BOOST: 'Boost Software License 1.0',
+        UNLICENSE: 'The Unlicense'
     };
+}
 
-    static enum = {
-        license: {
-            AGPL3: 'GNU AGPL v3',
-            GPL3: 'GNU GPL v3',
-            LGPL3: 'GNU LGPL v3',
-            MOZILLA2: 'Mozilla Public License 2.0',
-            APACHE2: 'Apache License 2.0',
-            MIT: 'MIT License',
-            BOOST: 'Boost Software License 1.0',
-            UNLICENSE: 'The Unlicense'
-        }
-    }
-
+class Questions {
     static required = [
         {
             name: "title",
@@ -32,15 +28,15 @@ class Questions {
         {
             name: "license",
             message: `What license will you be attributing to this project?`,
-            type: 'list',
+            type: 'ITEMS',
             choices: [
-                Questions.enum.license.AGPL3,
-                Questions.enum.license.GPL3,
-                Questions.enum.license.LGPL3,
-                Questions.enum.license.MOZILLA2,
-                Questions.enum.license.MIT,
-                Questions.enum.license.BOOST,
-                Questions.enum.license.UNLICENSE
+                Answers.license.AGPL3,
+                Answers.license.GPL3,
+                Answers.license.LGPL3,
+                Answers.license.MOZILLA2,
+                Answers.license.MIT,
+                Answers.license.BOOST,
+                Answers.license.UNLICENSE
             ]
         }
     ];
@@ -155,19 +151,49 @@ class Questions {
         }
     ]
 
+    static loop = {
+        name: 'loop',
+        message: 'Would you like to add more?',
+        type: 'confirm'
+    }
+
+    static async askLoop(...questions) {
+        let answers = [];
+        let answerSet = [];
+
+        do {
+            answerSet = {};
+
+            for (const question of questions) {
+                answerSet[question.name] = (await inquirer.prompt(question))[question.name];
+            }
+
+            answers.push(answerSet);
+        } while (await inquirer.prompt(Questions.loop)
+            .then(answer => answer.loop));
+
+        return answers;
+    }
+
     static async ask() {
-        console.log(Questions.messages.welcome);
+        // console.log(`Welcome to the README Generator.\nThis app will pose you a series of questions to help customise and create a professional README file.\nSome sections will ask you questions multiple times if you have a lot to add.`);
 
-        const requiredAnswers = await inquirer.prompt(Questions.required);
-        const sectionAnswers = await inquirer.prompt(Questions.sections);
+        // const requiredAnswers = await inquirer.prompt(Questions.required);
 
-        let socialAnswers = [];
-        if (sectionAnswers.sections.includes("socials")) {
-            socialAnswers = await inquirer.prompt(Questions.socials);
-        }
+        const testAnswers = await Questions.askLoop({name: 'testQuestion', message: 'Tell me something', type:'input'});
+        console.log(testAnswers);
+        // const sectionAnswers = await inquirer.prompt(Questions.sections);
 
-        return [requiredAnswers, sectionAnswers, socialAnswers];
+        // let socialAnswers = [];
+        // if (sectionAnswers.sections.includes("socials")) {
+        //     socialAnswers = await inquirer.prompt(Questions.socials);
+        // }
+
+        // return [requiredAnswers, sectionAnswers, socialAnswers];
     }
 }
 
-module.exports = Questions;
+module.exports = {
+    Questions,
+    Answers
+};
